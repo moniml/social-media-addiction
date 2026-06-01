@@ -1,0 +1,203 @@
+:root {
+  --bg: #050814;
+  --surface: rgba(14, 27, 58, 0.82);
+  --surface-soft: rgba(22, 38, 79, 0.78);
+  --text: #f3f7ff;
+  --muted: #a6b0d8;
+  --border: rgba(255, 255, 255, 0.09);
+  --shadow: 0 24px 80px rgba(1, 4, 17, 0.35);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: radial-gradient(circle at top left, rgba(99, 102, 241, 0.18), transparent 24%),
+    radial-gradient(circle at bottom right, rgba(14, 165, 233, 0.18), transparent 22%),
+    linear-gradient(180deg, #050814 0%, #070b1a 100%);
+  color: var(--text);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.navbar {
+  background: rgba(8, 12, 25, 0.88);
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.hero-section {
+  min-height: 92vh;
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding-top: 6rem;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top, rgba(56, 189, 248, 0.12), transparent 32%),
+    radial-gradient(circle at right, rgba(79, 70, 229, 0.18), transparent 26%);
+  pointer-events: none;
+}
+
+.hero-title {
+  line-height: 1.05;
+}
+
+.eyebrow {
+  display: inline-flex;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.glass-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 28px;
+  backdrop-filter: blur(22px);
+  transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+}
+
+.hover-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(148, 163, 184, 0.2);
+}
+
+.hero-card {
+  min-height: 280px;
+}
+
+.feature-icon {
+  font-size: 2rem;
+}
+
+.section-title {
+  font-size: clamp(2rem, 2.8vw, 3rem);
+  font-weight: 800;
+  margin-top: 0.5rem;
+}
+
+.footer-section {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin-top: 4rem;
+}
+
+.info-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 18px;
+}
+
+.dashboard-metric {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 1rem 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.table-row-hover:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.sticky-sidebar {
+  position: sticky;
+  top: 6rem;
+}
+
+.loader-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 7, 23, 0.82);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+}
+
+.loader-overlay.active {
+  display: flex;
+}
+
+.loader-box {
+  background: rgba(10, 16, 34, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 22px;
+  padding: 2rem 2.5rem;
+  text-align: center;
+}
+
+.media-preview {
+  min-height: 180px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px dashed rgba(148, 163, 184, 0.4);
+  color: #cbd5e1;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+}
+
+.media-preview img,
+.media-preview video {
+  max-width: 100%;
+  max-height: 240px;
+  border-radius: 16px;
+}
+
+/* Make chart canvases more compact on the dashboard */
+.glass-card canvas {
+  width: 100% !important;
+  max-height: 180px;
+  height: auto !important;
+}
+
+.avatar {
+  width: 72px;
+  height: 72px;
+  display: grid;
+  place-items: center;
+  margin: auto;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 22px;
+  font-size: 1.75rem;
+  color: #8b8eff;
+}
+
+@media (max-width: 991px) {
+  .sticky-sidebar {
+    position: relative;
+    top: 0;
+  }
+}
+
+footer a {
+  color: rgba(255, 255, 255, 0.64);
+  text-decoration: none;
+}
+
+footer a:hover {
+  color: #e2e8f0;
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    min-height: auto;
+    padding-top: 8rem;
+  }
+}
+
+/* Improve contrast for muted/helper text inside result and glass cards */
+.glass-card .text-muted,
+.result-section .text-muted {
+  color: rgba(255, 255, 255, 0.78) !important;
+}

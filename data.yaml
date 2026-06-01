@@ -1,0 +1,8 @@
+path: C:/Users/monic/OneDrive/Desktop/socila media/dataset
+
+train: train
+val: val
+test: test
+
+names:
+  0: phone

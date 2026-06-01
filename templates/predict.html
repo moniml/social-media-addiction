@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Predict Risk | Social Media Addiction</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-Lp7l+Y6Qin+xBje2+rzIuFq9T4xS7Wy6fKCXRQGcGcJrgF1tQ4zNKZ8cP5GfqiY7NnX0ZfbBcm6vK2bY8KJw2g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="/static/css/style.css" />
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark py-3 blur-card shadow-sm fixed-top">
+      <div class="container">
+        <a class="navbar-brand fs-4 fw-bold" href="/">AddictSense AI</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+          <ul class="navbar-nav align-items-center">
+            <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+            <li class="nav-item"><a class="nav-link active" href="/predict">Predict</a></li>
+            <li class="nav-item"><a class="btn btn-outline-light ms-3" href="/">Home</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <main class="container py-6">
+      <div class="row gy-4">
+        <div class="col-xl-8">
+          <div class="glass-card p-4 shadow-sm">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+              <div>
+                <p class="eyebrow text-primary mb-1">Prediction Form</p>
+                <h3>Enter behavioral data</h3>
+              </div>
+              <div class="text-end">
+                <span class="badge bg-info bg-opacity-20 text-info">Smart scoring</span>
+              </div>
+            </div>
+            <form action="/predict" method="post" onsubmit="showLoading(event)" class="needs-validation" novalidate>
+              <div class="row gy-3">
+                <div class="col-md-6">
+                  <label class="form-label">Age</label>
+                  <input type="number" name="age" class="form-control form-control-dark" min="12" max="80" value="22" required />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Gender</label>
+                  <select name="gender" class="form-select form-select-dark" required>
+                    <option value="1" selected>Female</option>
+                    <option value="0">Male</option>
+                    <option value="2">Other</option>
+                  </select>
+                </div>
+                <div class="col-12">
+                  <label class="form-label d-flex justify-content-between">Daily Usage Hours <span id="usageValue">4</span>h</label>
+                  <input type="range" name="usage_hours" class="form-range" min="0" max="12" value="4" oninput="updateRangeValue('usageValue', this.value)" />
+                </div>
+                <div class="col-12">
+                  <label class="form-label d-flex justify-content-between">Sleep Hours <span id="sleepValue">7</span>h</label>
+                  <input type="range" name="sleep_hours" class="form-range" min="3" max="12" value="7" step="0.5" oninput="updateRangeValue('sleepValue', this.value)" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label d-flex justify-content-between">Mental Health Score <span id="mentalValue">72</span></label>
+                  <input type="range" name="mental_score" class="form-range" min="0" max="100" value="72" oninput="updateRangeValue('mentalValue', this.value)" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label d-flex justify-content-between">Productivity Loss <span id="productivityValue">38</span></label>
+                  <input type="range" name="productivity_loss" class="form-range" min="0" max="100" value="38" oninput="updateRangeValue('productivityValue', this.value)" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label d-flex justify-content-between">Relationship Conflicts <span id="relationshipValue">22</span></label>
+                  <input type="range" name="relationship_conflicts" class="form-range" min="0" max="100" value="22" oninput="updateRangeValue('relationshipValue', this.value)" />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label d-flex justify-content-between">Academic Performance <span id="academicValue">78</span></label>
+                  <input type="range" name="academic_performance" class="form-range" min="0" max="100" value="78" oninput="updateRangeValue('academicValue', this.value)" />
+                </div>
+                <div class="col-12">
+                  <label class="form-label d-flex justify-content-between">Stress Level <span id="stressValue">34</span></label>
+                  <input type="range" name="stress_level" class="form-range" min="0" max="100" value="34" oninput="updateRangeValue('stressValue', this.value)" />
+                </div>
+                <div class="col-12 text-end">
+                  <button id="predictButton" type="submit" class="btn btn-primary btn-lg">Predict Risk</button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="row g-4 mt-4">
+            <div class="col-lg-6">
+              <div class="glass-card p-4 shadow-sm h-100">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                  <div>
+                    <p class="eyebrow text-primary mb-1">Upload Photo</p>
+                    <h5 class="mb-0">Detect Phone in Image</h5>
+                  </div>
+                  <span class="badge bg-warning bg-opacity-20 text-warning">Phone Scan</span>
+                </div>
+                <form action="/predict" method="post" enctype="multipart/form-data" onsubmit="showLoading(event)" class="needs-validation" novalidate>
+                  <input type="hidden" name="mode" value="photo" />
+                  <div class="mb-3">
+                    <label class="form-label">Select an image</label>
+                    <input type="file" name="photo_file" accept="image/*" class="form-control form-control-dark" onchange="previewMedia(event, 'photoPreview')" required />
+                  </div>
+                  <div class="media-preview text-center rounded-3 p-4 mb-3" id="photoPreview">No image selected.</div>
+                  <button type="submit" class="btn btn-outline-light w-100">Analyze Photo</button>
+                </form>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="glass-card p-4 shadow-sm h-100">
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                  <div>
+                    <p class="eyebrow text-primary mb-1">Upload Video</p>
+                    <h5 class="mb-0">Assess Addiction Risk</h5>
+                  </div>
+                  <span class="badge bg-info bg-opacity-20 text-info">Video Scan</span>
+                </div>
+                <form action="/predict" method="post" enctype="multipart/form-data" onsubmit="showLoading(event)" class="needs-validation" novalidate>
+                  <input type="hidden" name="mode" value="video" />
+                  <div class="mb-3">
+                    <label class="form-label">Select a video</label>
+                    <input type="file" name="video_file" accept="video/*" class="form-control form-control-dark" onchange="previewMedia(event, 'videoPreview')" required />
+                  </div>
+                  <div class="media-preview text-center rounded-3 p-4 mb-3" id="videoPreview">No video selected.</div>
+                  <button type="submit" class="btn btn-outline-light w-100">Analyze Video</button>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          {% if result %}
+          <div class="glass-card p-4 shadow-sm mt-4 result-section">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <div>
+                <p class="eyebrow text-primary mb-1">Prediction Result</p>
+                <h4 class="mb-0">{{ result.label }}</h4>
+              </div>
+              <span class="badge bg-{{ result.color }} fs-6">Confidence {{ result.confidence }}</span>
+            </div>
+            {% if result.type == 'behavior' %}
+            <p class="text-muted">The model has assessed the submission and produced a risk category with a confidence score based on the input behavioral signals.</p>
+            <div class="row g-3 mt-3">
+              {% for key, value in result.features.items() %}
+              <div class="col-sm-6 col-lg-4">
+                <div class="info-card p-3">
+                  <span class="text-muted small">{{ key }}</span>
+                  <p class="mb-0 fw-semibold">{{ value }}</p>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-muted">{{ result.details or 'The media analysis is complete. Review the assessment below.' }}</p>
+            {% if result.type == 'photo' %}
+            <div class="alert alert-secondary bg-white bg-opacity-5 border-0 text-white mt-3" role="alert">
+              <strong>Photo Analysis</strong><br />
+              {{ result.details }}
+            </div>
+            {% elif result.type == 'video' %}
+            <div class="alert alert-secondary bg-white bg-opacity-5 border-0 text-white mt-3" role="alert">
+              <strong>Video Analysis</strong><br />
+              {{ result.details }}
+            </div>
+            {% endif %}
+            {% endif %}
+          </div>
+          {% endif %}
+
+          <div class="glass-card p-4 shadow-sm mt-4">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+              <div>
+                <p class="eyebrow text-primary mb-1">Prediction History</p>
+                <h4 class="mb-0">Recent evaluations</h4>
+              </div>
+            </div>
+            {% if history %}
+            <div class="table-responsive">
+              <table class="table table-borderless align-middle text-white mb-0">
+                <thead>
+                  <tr class="text-muted small">
+                    <th>Time</th>
+                    <th>Risk</th>
+                    <th>Confidence</th>
+                    <th>Age</th>
+                    <th>Usage</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in history[:8] %}
+                  <tr class="table-row-hover">
+                    <td>{{ item.timestamp }}</td>
+                    <td><span class="badge bg-{{ item.color }}">{{ item.label }}</span></td>
+                    <td>{{ item.confidence }}</td>
+                    <td>{{ item.features['Age'] }}</td>
+                    <td>{{ item.features['Daily Usage Hours'] }}h</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            {% else %}
+            <p class="text-muted mb-0">No predictions have been made yet. Submit the form to generate the first record.</p>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="col-xl-4">
+          <div class="glass-card p-4 shadow-sm sticky-sidebar">
+            <span class="eyebrow text-primary">Dashboard</span>
+            <h4 class="mt-3 mb-4">Summary Metrics</h4>
+            <div class="dashboard-metric mb-3">
+              <span>Total Predictions</span>
+              <strong>{{ stats.total_predictions }}</strong>
+            </div>
+            <div class="dashboard-metric mb-3">
+              <span>Highest Accuracy Model</span>
+              <strong>{{ stats.highest_model }}</strong>
+            </div>
+            <div class="dashboard-metric mb-3">
+              <span>Random Forest Accuracy</span>
+              <strong>{{ stats.rf_accuracy }}%</strong>
+            </div>
+            <div class="dashboard-metric">
+              <span>Dataset Size</span>
+              <strong>{{ stats.dataset_size }}</strong>
+            </div>
+          </div>
+
+          <div class="glass-card p-4 shadow-sm mt-4">
+            <span class="eyebrow text-primary">ML Summary</span>
+            <h5 class="mt-3">Feature importance</h5>
+            <ul class="list-unstyled mt-3 text-muted small">
+              {% for name, score in feature_importance[:5] %}
+              <li class="mb-2"><strong>{{ name }}:</strong> {{ score }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <section class="mt-5">
+        <div class="row gy-4">
+          <div class="col-lg-4">
+            <div class="glass-card p-4 shadow-sm h-100">
+              <div class="d-flex align-items-center justify-content-between mb-3">
+                <div>
+                  <span class="eyebrow text-primary">Accuracy</span>
+                  <h5 class="mb-0">Comparison Chart</h5>
+                </div>
+                <i class="fas fa-chart-bar text-info"></i>
+              </div>
+              <canvas id="accuracyChart" height="240"></canvas>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="glass-card p-4 shadow-sm h-100">
+              <div class="d-flex align-items-center justify-content-between mb-3">
+                <div>
+                  <span class="eyebrow text-primary">Risk Share</span>
+                  <h5 class="mb-0">Prediction Distribution</h5>
+                </div>
+                <i class="fas fa-chart-pie text-warning"></i>
+              </div>
+              <canvas id="riskPieChart" height="240"></canvas>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="glass-card p-4 shadow-sm h-100">
+              <div class="d-flex align-items-center justify-content-between mb-3">
+                <div>
+                  <span class="eyebrow text-primary">Feature Insight</span>
+                  <h5 class="mb-0">Importance Score</h5>
+                </div>
+                <i class="fas fa-brain text-success"></i>
+              </div>
+              <canvas id="featureChart" height="240"></canvas>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="loaderOverlay" class="loader-overlay">
+      <div class="loader-box">
+        <div class="spinner-border text-light" role="status"></div>
+        <p class="mt-3">Analyzing risk profile</p>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script>
+      const chartPayload = {
+        accuracyLabels: {{ accuracy_data['labels']|tojson }},
+        accuracyValues: {{ accuracy_data['values']|tojson }},
+        pieLabels: {{ risk_pie['labels']|tojson }},
+        pieValues: {{ risk_pie['values']|tojson }},
+        featureLabels: {{ feature_labels|tojson }},
+        featureValues: {{ feature_values|tojson }},
+      };
+    </script>
+    <script src="/static/js/script.js"></script>
+  </body>
+</html>

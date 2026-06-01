@@ -1,0 +1,36 @@
+{
+  "version": "6.3.0",
+  "flags": {},
+  "shapes": [
+    {
+      "label": "phone",
+      "points": [
+        [
+          787.4789915966386,
+          465.88235294117646
+        ],
+        [
+          821.9327731092436,
+          443.1932773109244
+        ],
+        [
+          845.4621848739495,
+          443.1932773109244
+        ],
+        [
+          815.2100840336134,
+          465.0420168067227
+        ]
+      ],
+      "group_id": null,
+      "description": "",
+      "shape_type": "polygon",
+      "flags": {},
+      "mask": null
+    }
+  ],
+  "imagePath": "frame_347.jpg",
+  "imageData": null,
+  "imageHeight": 720,
+  "imageWidth": 1280
+}
